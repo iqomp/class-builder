@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 0.0.1
+ * @version 1.0.0
  */
 
 namespace Iqomp\ClassBuilder;

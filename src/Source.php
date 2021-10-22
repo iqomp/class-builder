@@ -3,7 +3,7 @@
 /**
  * PHP variable to text builder
  * @package iqomp/class-builder
- * @version 0.0.1
+ * @version 1.0.0
  */
 
 namespace Iqomp\ClassBuilder;
