@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace Iqomp\ClassBuilder;
@@ -194,11 +194,11 @@ class Builder
         $tx .= ' ';
         $tx .= $data['name'];
 
-        if (isset($data['extends'])) {
+        if (isset($data['extends']) && $data['extends']) {
             $tx .= self::genExtends($data['extends'], $data['uses']);
         }
 
-        if (isset($data['implements'])) {
+        if (isset($data['implements']) && $data['implements']) {
             $tx .= self::genImplements($data['implements'], $data['uses']);
         }
 

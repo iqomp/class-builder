@@ -3,7 +3,7 @@
 /**
  * PHP variable to text builder
  * @package iqomp/class-builder
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace Iqomp\ClassBuilder;
@@ -77,16 +77,20 @@ class Source
     {
         $nl = PHP_EOL;
         $s = str_repeat(' ', $space);
+        $sn = $s . '    ';
 
         $tx = '[';
 
         foreach ($data as $key => $value) {
             $tx .= $nl;
-            $tx .= $s . $s;
+            $tx .= $sn;
             $tx .= self::toSource($key);
             $tx .= ' => ';
             $tx .= self::toSource($value, $space + 4);
+            $tx .= ',';
         }
+
+        $tx = chop($tx, ',');
 
         $tx .= $nl;
         $tx .= $s . ']';
