@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 namespace Iqomp\ClassBuilder;
@@ -167,7 +167,7 @@ class Builder
             $u_line = substr($line, $indent);
             $u_line = chop($u_line);
 
-            $tx .= $s . $u_line . $nl;
+            $tx .= chop($s . $u_line) . $nl;
         }
 
         return chop($tx) . $nl;
