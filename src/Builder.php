@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.0.1
+ * @version 1.1.0
  */
 
 namespace Iqomp\ClassBuilder;
@@ -90,6 +90,9 @@ class Builder
             $tx .= self::implementSuffix($attr);
             $tx .= $nl;
             $tx .= $s . '{' . $nl;
+            if (isset($attr['content'])) {
+                $tx .= self::implementMethodContent($attr['content']);
+            }
             $tx .= $s . '}' . $nl . $nl;
         }
 
@@ -131,6 +134,43 @@ class Builder
         }
 
         return implode(', ', $attrs);
+    }
+
+    protected static function implementMethodContent(string $content): string
+    {
+        $nl = PHP_EOL;
+        $lines = explode($nl, $content);
+
+        $indent = 80;
+        foreach ($lines as $line) {
+            if (!trim($line)) {
+                continue;
+            }
+
+            $c_len = strlen($line);
+            $t_len = strlen(ltrim($line));
+            $s_len = $c_len - $t_len;
+
+            if ($s_len < $indent) {
+                $indent = $s_len;
+            }
+        }
+
+        $tx = '';
+        $s = str_repeat(' ', 8);
+        foreach ($lines as $line) {
+            $e_line = chop($line);
+            if (!$e_line && !$tx) {
+                continue;
+            }
+
+            $u_line = substr($line, $indent);
+            $u_line = chop($u_line);
+
+            $tx .= $s . $u_line . $nl;
+        }
+
+        return chop($tx) . $nl;
     }
 
     protected static function implementPrefix(array $attr): string

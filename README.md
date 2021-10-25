@@ -71,7 +71,8 @@ $structure = [
                     'type' => 'bool',
                     'default' => 0
                 ]
-            ]
+            ],
+            'content' => 'return false;'
         ]
     ]
 ];
@@ -99,6 +100,7 @@ class ClassName extends \Other\Module\Class implements \Other\Module\Iface
 
     public function getOne (int $first, bool $second = 0): ?object
     {
+        return false;
     }
 }
 ```
