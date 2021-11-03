@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.1.1
+ * @version 1.1.2
  */
 
 namespace Iqomp\ClassBuilder;
@@ -72,7 +72,7 @@ class Builder
         return $tx;
     }
 
-    protected static function genMethods(array $methods, array $uses = []): string
+    protected static function genMethods(array $methods, array $uses = [], bool $ifs = false): string
     {
         $tx = '';
         $nl = PHP_EOL;
@@ -88,12 +88,18 @@ class Builder
             }
             $tx .= ')';
             $tx .= self::implementSuffix($attr);
-            $tx .= $nl;
-            $tx .= $s . '{' . $nl;
-            if (isset($attr['content'])) {
-                $tx .= self::implementMethodContent($attr['content']);
+            if ($ifs) {
+                $tx .= ';';
+            } else {
+                $tx .= $nl;
+                $tx .= $s . '{' . $nl;
+                if (isset($attr['content'])) {
+                    $tx .= self::implementMethodContent($attr['content']);
+                }
+                $tx .= $s . '}';
             }
-            $tx .= $s . '}' . $nl . $nl;
+
+            $tx .= $nl . $nl;
         }
 
         return $tx;
@@ -127,7 +133,7 @@ class Builder
             $tx = self::implementPrefix($attr);
             $tx .= '$' . $name;
             if (array_key_exists('default', $attr)) {
-                $tx .= ' = ' . Source::toSource($attr['default']);
+                $tx .= ' = ' . Source::toSource($attr['default'], 0, true);
             }
 
             $attrs[] = $tx;
@@ -251,7 +257,8 @@ class Builder
         }
 
         if (isset($data['methods'])) {
-            $tx .= self::genMethods($data['methods'], $data['uses']);
+            $is_ifs = $data['type'] == 'interface';
+            $tx .= self::genMethods($data['methods'], $data['uses'], $is_ifs);
         }
 
         $tx = chop($tx, $nl);

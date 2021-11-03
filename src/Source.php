@@ -3,39 +3,41 @@
 /**
  * PHP variable to text builder
  * @package iqomp/class-builder
- * @version 1.0.1
+ * @version 1.1.2
  */
 
 namespace Iqomp\ClassBuilder;
 
 class Source
 {
-    public static function fromArray(array $data, int $space = 0): string
+    public static function fromArray(array $data, int $space = 0, bool $inline = false): string
     {
         if (!$data) {
             return '[]';
         }
 
         if (array_keys($data) !== range(0, count($data) - 1)) {
-            return self::fromAssocArray($data, $space);
+            return self::fromAssocArray($data, $space, $inline);
         } else {
-            return self::fromArrayIndexed($data, $space);
+            return self::fromArrayIndexed($data, $space, $inline);
         }
 
         return $tx;
     }
 
-    public static function fromArrayIndexed(array $data, int $space = 0): string
+    public static function fromArrayIndexed(array $data, int $space = 0, bool $f_inline = false): string
     {
         $inline = true;
-        $inable = ['boolean', 'integer', 'double', 'string'];
 
-        foreach ($data as $index => $value) {
-            $type = gettype($value);
+        if (!$f_inline) {
+            $inable = ['boolean', 'integer', 'double', 'string'];
+            foreach ($data as $index => $value) {
+                $type = gettype($value);
 
-            if (!in_array($type, $inable)) {
-                $inline = false;
-                break;
+                if (!in_array($type, $inable)) {
+                    $inline = false;
+                    break;
+                }
             }
         }
 
@@ -73,7 +75,7 @@ class Source
         return $tx;
     }
 
-    public static function fromAssocArray(array $data, int $space = 0): string
+    public static function fromAssocArray(array $data, int $space = 0, bool $inline = false): string
     {
         $nl = PHP_EOL;
         $s = str_repeat(' ', $space);
@@ -82,23 +84,27 @@ class Source
         $tx = '[';
 
         foreach ($data as $key => $value) {
-            $tx .= $nl;
-            $tx .= $sn;
+            if (!$inline) {
+                $tx .= $nl;
+                $tx .= $sn;
+            }
             $tx .= self::toSource($key);
             $tx .= ' => ';
-            $tx .= self::toSource($value, $space + 4);
+            $tx .= self::toSource($value, $space + 4, $inline);
             $tx .= ',';
         }
 
         $tx = chop($tx, ',');
 
-        $tx .= $nl;
-        $tx .= $s . ']';
+        if (!$inline) {
+            $tx .= $nl . $s;
+        }
+        $tx .= ']';
 
         return $tx;
     }
 
-    public static function toSource($vars, int $space = 0): string
+    public static function toSource($vars, int $space = 0, bool $inline = false): string
     {
         if (is_string($vars)) {
             return "'$vars'";
@@ -117,7 +123,7 @@ class Source
         }
 
         if (is_array($vars)) {
-            return self::fromArray($vars, $space);
+            return self::fromArray($vars, $space, $inline);
         }
 
         return 'UNKNOW DATA TYPE';
