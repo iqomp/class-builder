@@ -35,6 +35,11 @@ $structure = [
         '@version 0.0.1'
     ],
 
+    // the class comment
+    'class_comments' => [
+        '@RpcService(name="ClassName")'
+    ],
+
     'namespace' => 'Vendor\\Module',
     'type' => 'class', // interface
     'name' => 'ClassName',
@@ -74,6 +79,10 @@ $structure = [
             ],
             'content' => 'return false;'
         ]
+    ],
+    'uses' => [
+        'App\\Library\\Class' => 'XClass',
+        'App\\Library\\Awesome' => null
     ]
 ];
 ```
@@ -92,6 +101,12 @@ the `<?php` line:
 
 namespace Vendor\Module;
 
+use App\Library\Class as XClass;
+use App\Library\Awesome;
+
+/**
+ * @RpcService(name="ClassName")
+ */
 class ClassName extends \Other\Module\Class implements \Other\Module\Iface
 {
     public string $first = null;

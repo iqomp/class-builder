@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.1.2
+ * @version 1.2.0
  */
 
 namespace Iqomp\ClassBuilder;
@@ -212,7 +212,7 @@ class Builder
 
     protected static function parseUsesClasses(array $data): array
     {
-        return [];
+        return $data['uses'] ?? [];
     }
 
     public static function build(array $data): string
@@ -233,6 +233,23 @@ class Builder
             $tx .= $nl;
             $tx .= 'namespace ' . $data['namespace'] . ';';
             $tx .= $nl;
+        }
+
+        if (isset($data['uses'])) {
+            $tx .= $nl;
+            foreach ($data['uses'] as $class => $alt) {
+                $tx .= 'use ' . $class;
+                if ($alt) {
+                    $tx .= ' as ' . $alt;
+                }
+                $tx .= ';';
+                $tx .= $nl;
+            }
+        }
+
+        if (isset($data['class_comments'])) {
+            $tx .= $nl;
+            $tx .= self::genComment($data['class_comments'], 0);
         }
 
         $tx .= $nl;
