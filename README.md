@@ -77,7 +77,12 @@ $structure = [
                     'default' => 0
                 ]
             ],
-            'content' => 'return false;'
+            'content' => 'return false;',
+            'comment' => [
+                '@param first int first arguments',
+                '@param second bool second arguments',
+                '@return bool'
+            ]
         ]
     ],
     'uses' => [
@@ -113,6 +118,11 @@ class ClassName extends \Other\Module\Class implements \Other\Module\Iface
 
     protected \Other\Module\Class $second;
 
+    /**
+     * @param first int first arguments
+     * @param second bool second arguments
+     * @return bool
+     */
     public function getOne (int $first, bool $second = 0): ?object
     {
         return false;

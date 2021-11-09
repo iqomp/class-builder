@@ -3,7 +3,7 @@
     "description": "Create PHP class/interface content based on structured array",
     "type": "library",
     "license": "MIT",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "authors": [
         {
             "name": "Iqbal Fauzi",

@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.2.0
+ * @version 1.3.0
  */
 
 namespace Iqomp\ClassBuilder;
@@ -79,6 +79,10 @@ class Builder
         $s  = '    ';
 
         foreach ($methods as $name => $attr) {
+            if (isset($attr['comment'])) {
+                $tx .= self::genComment($attr['comment'], 4);
+                $tx .= $nl;
+            }
             $tx .= $s;
             $tx .= self::implementPrefix($attr);
             $tx .= 'function ' . $name;
