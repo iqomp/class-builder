@@ -107,6 +107,7 @@ class Source
     public static function toSource($vars, int $space = 0, bool $inline = false): string
     {
         if (is_string($vars)) {
+            $vars = addslashes($vars);
             return "'$vars'";
         }
 

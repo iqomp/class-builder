@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.3.0
+ * @version 1.3.1
  */
 
 namespace Iqomp\ClassBuilder;
@@ -86,7 +86,7 @@ class Builder
             $tx .= $s;
             $tx .= self::implementPrefix($attr);
             $tx .= 'function ' . $name;
-            $tx .= ' (';
+            $tx .= '(';
             if (isset($attr['arguments'])) {
                 $tx .= self::implementArguments($attr['arguments']);
             }
@@ -249,6 +249,8 @@ class Builder
                 $tx .= ';';
                 $tx .= $nl;
             }
+
+            $tx = chop($tx, $nl);
         }
 
         if (isset($data['class_comments'])) {
