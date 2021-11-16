@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.3.1
+ * @version 1.4.0
  */
 
 namespace Iqomp\ClassBuilder;
@@ -113,9 +113,14 @@ class Builder
     {
         $tx = '';
         $nl = PHP_EOL;
+        $s  = '    ';
 
         foreach ($props as $name => $attr) {
-            $tx .= '    ';
+            if (isset($attr['comment'])) {
+                $tx .= self::genComment($attr['comment'], 4);
+                $tx .= $nl;
+            }
+            $tx .= $s;
             $tx .= self::implementPrefix($attr);
             $tx .= '$' . $name;
 
@@ -239,9 +244,13 @@ class Builder
             $tx .= $nl;
         }
 
-        if (isset($data['uses'])) {
+        if (isset($data['uses']) && $data['uses']) {
             $tx .= $nl;
             foreach ($data['uses'] as $class => $alt) {
+                if (is_numeric($class)) {
+                    $class = $alt;
+                    $alt = null;
+                }
                 $tx .= 'use ' . $class;
                 if ($alt) {
                     $tx .= ' as ' . $alt;
@@ -249,8 +258,6 @@ class Builder
                 $tx .= ';';
                 $tx .= $nl;
             }
-
-            $tx = chop($tx, $nl);
         }
 
         if (isset($data['class_comments'])) {
@@ -258,8 +265,13 @@ class Builder
             $tx .= self::genComment($data['class_comments'], 0);
         }
 
+        $type = $data['type'];
+        if ($type === 'abstract') {
+            $type = 'abstract class';
+        }
+
         $tx .= $nl;
-        $tx .= $data['type'];
+        $tx .= $type;
         $tx .= ' ';
         $tx .= $data['name'];
 
