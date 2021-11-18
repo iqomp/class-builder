@@ -3,7 +3,7 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.4.0
+ * @version 1.4.1
  */
 
 namespace Iqomp\ClassBuilder;
@@ -232,13 +232,13 @@ class Builder
 
         $tx = '<?php' . $nl;
 
-        if (isset($data['comments'])) {
+        if (isset($data['comments']) && $data['comments']) {
             $tx .= $nl;
             $tx .= self::genComment($data['comments'], 0);
             $tx .= $nl;
         }
 
-        if (isset($data['namespace'])) {
+        if (isset($data['namespace']) && $data['namespace']) {
             $tx .= $nl;
             $tx .= 'namespace ' . $data['namespace'] . ';';
             $tx .= $nl;
