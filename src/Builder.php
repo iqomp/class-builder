@@ -3,13 +3,23 @@
 /**
  * Build class file content based on structured array
  * @package iqomp/class-builder
- * @version 1.4.1
+ * @version 1.5.0
  */
 
 namespace Iqomp\ClassBuilder;
 
 class Builder
 {
+    protected static function genAttribute(string $attribute, int $space = 0): string
+    {
+        $nl = PHP_EOL;
+        $s = str_repeat(' ', $space);
+
+        $tx = $s . '#[' . $attribute . ']';
+
+        return $tx;
+    }
+
     protected static function genComment(array $comments, int $space = 0): string
     {
         $nl = PHP_EOL;
@@ -83,6 +93,10 @@ class Builder
                 $tx .= self::genComment($attr['comment'], 4);
                 $tx .= $nl;
             }
+            if (isset($attr['attribute'])) {
+                $tx .= self::genAttribute($attr['attribute'], 4);
+                $tx .= $nl;
+            }
             $tx .= $s;
             $tx .= self::implementPrefix($attr);
             $tx .= 'function ' . $name;
@@ -118,6 +132,10 @@ class Builder
         foreach ($props as $name => $attr) {
             if (isset($attr['comment'])) {
                 $tx .= self::genComment($attr['comment'], 4);
+                $tx .= $nl;
+            }
+            if (isset($attr['attribute'])) {
+                $tx .= self::genAttribute($attr['attribute'], 4);
                 $tx .= $nl;
             }
             $tx .= $s;

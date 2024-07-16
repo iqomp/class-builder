@@ -56,6 +56,7 @@ $structure = [
             'static' => false,
             'visibility' => 'public',
             'type' => 'string',
+            'attribute' => 'string',
             'default' => null // remove to not set the default
         ],
         'second' => [
@@ -68,6 +69,7 @@ $structure = [
             'static' => false,
             'visibility' => 'public',
             'return' => '?object',
+            'attribute' => 'string',
             'arguments' => [
                 'first' => [
                     'type' => 'int'
@@ -114,6 +116,7 @@ use App\Library\Awesome;
  */
 class ClassName extends \Other\Module\Class implements \Other\Module\Iface
 {
+    #[string]
     public string $first = null;
 
     protected \Other\Module\Class $second;
@@ -123,6 +126,7 @@ class ClassName extends \Other\Module\Class implements \Other\Module\Iface
      * @param second bool second arguments
      * @return bool
      */
+    #[string]
     public function getOne (int $first, bool $second = 0): ?object
     {
         return false;
